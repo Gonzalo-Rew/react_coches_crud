@@ -5,90 +5,95 @@ import ConfirmarDialog from "./ConfirmarDialog";
 
 export default class GaleriaComponent extends Component {
   service = new CochesService();
-
-  state = {
-    coches: [],
-    isLodading: true,
-    cocheSeleccionado: null,
-  };
+  state = { coches: [], isLoading: true, cocheSeleccionado: null };
 
   loadCoches = async () => {
     const coches = await this.service.getCoches();
-    this.setState({ coches, isLodading: false });
+    this.setState({ coches, isLoading: false });
   };
-
-  abrirDialogoEliminar = (coche) => {
-    this.setState({ cocheSeleccionado: coche });
-  };
-
-  cerrarDialogoEliminar = () => {
-    this.setState({ cocheSeleccionado: null });
-  };
-
+  abrirDialogoEliminar = (coche) => this.setState({ cocheSeleccionado: coche });
+  cerrarDialogoEliminar = () => this.setState({ cocheSeleccionado: null });
   deleteCoche = async () => {
-    const { cocheSeleccionado } = this.state;
-
-    await this.service.deleteCoche(cocheSeleccionado.idCoche);
+    await this.service.deleteCoche(this.state.cocheSeleccionado.idCoche);
     this.setState({ cocheSeleccionado: null });
     this.loadCoches();
   };
-
   componentDidMount() {
     this.loadCoches();
   }
 
   render() {
+    const { coches, isLoading, cocheSeleccionado } = this.state;
     return (
-      <>
-        <h1>Galeria de coches</h1>
-
-        <NavLink to="/crear" className="bg-blue-500 text-white px-4 py-2 rounded">
-          Crear un nuevo coche
-        </NavLink>
-
-        {this.state.isLodading ? (
-          <div className="flex justify-center items-center p-8">
-            <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600"></div>
-            <span className="ml-3 text-gray-600">Cargando coches...</span>
+      <section className="gallery-page">
+        <div className="page-header">
+          <div>
+            <span className="eyebrow">Tu colección</span>
+            <h1>Galería de coches</h1>
+            <p>Explora y gestiona todos tus vehículos.</p>
           </div>
-        ) : this.state.coches.length === 0 ? (
-          <p>No hay coches disponibles</p>
+          <NavLink to="/crear" className="button button--primary">
+            + Añadir coche
+          </NavLink>
+        </div>
+        {isLoading ? (
+          <div className="state-card">
+            <span className="spinner" />
+            Cargando coches...
+          </div>
+        ) : coches.length === 0 ? (
+          <div className="state-card">
+            <h2>Tu galería está vacía</h2>
+            <p>Añade tu primer coche para empezar.</p>
+          </div>
         ) : (
-          this.state.coches.map((coche, index) => (
-            <div key={index}>
-              <h2>
-                {coche.marca} {coche.modelo}
-              </h2>
-              <p>{coche.conductor}</p>
-              <img
-                src={coche.imagen}
-                alt={`${coche.marca} ${coche.modelo}`}
-                style={{ height: "50px", objectFit: "cover" }}
-              />
-              <NavLink
-                to={`/modificar/${coche.idCoche}`}
-                className="bg-yellow-500 text-white px-4 py-2 rounded"
-              >
-                Modificar
-              </NavLink>
-              <button
-                onClick={() => this.abrirDialogoEliminar(coche)}
-                className="bg-red-500 text-white px-4 py-2 rounded ml-2"
-              >
-                Eliminar
-              </button>
-            </div>
-          ))
+          <div className="car-grid">
+            {coches.map((coche) => (
+              <article className="car-card" key={coche.idCoche}>
+                <NavLink
+                  to={`/detalle/${coche.idCoche}`}
+                  className="car-card__image-link"
+                >
+                  <img
+                    src={coche.imagen}
+                    alt={`${coche.marca} ${coche.modelo}`}
+                    className="car-card__image"
+                  />
+                </NavLink>
+                <div className="car-card__body">
+                  <span className="car-card__id">#{coche.idCoche}</span>
+                  <h2>
+                    {coche.marca} <strong>{coche.modelo}</strong>
+                  </h2>
+                  <p>Conductor: {coche.conductor}</p>
+                  <div className="card-actions">
+                    <NavLink
+                      to={`/detalle/${coche.idCoche}`}
+                      className="text-link"
+                    >
+                      Ver detalles →
+                    </NavLink>
+                    <button
+                      className="icon-button"
+                      aria-label={`Eliminar ${coche.marca} ${coche.modelo}`}
+                      onClick={() => this.abrirDialogoEliminar(coche)}
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
         )}
-
-        {this.state.cocheSeleccionado && (
+        {cocheSeleccionado && (
           <ConfirmarDialog
-            coche={this.state.cocheSeleccionado}
+            coche={cocheSeleccionado}
             onClose={this.cerrarDialogoEliminar}
             onConfirm={this.deleteCoche}
           />
         )}
-      </>
+      </section>
     );
   }
 }

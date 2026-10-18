@@ -32,30 +32,36 @@ export default class CreateCoche extends Component {
       return <Navigate to="/" />;
     }
     return (
-      <>
-        <h1>Crear coche</h1>
-        <div>
+      <section className="form-page">
+        <div className="form-heading">
+          <span className="eyebrow">Nueva incorporación</span>
+          <h1>Crear coche</h1>
+          <p>Añade un vehículo a tu colección.</p>
+        </div>
+        <div className="form-card">
+        <div className="field">
           <label htmlFor="idCoche">ID Coche:</label>
           <input type="text" id="idCoche" ref={this.inputIdCoche} />
         </div>
-        <div>
+        <div className="field">
           <label htmlFor="marca">Marca:</label>
           <input type="text" id="marca" ref={this.inputMarca} />
         </div>
-        <div>
+        <div className="field">
           <label htmlFor="modelo">Modelo:</label>
           <input type="text" id="modelo" ref={this.inputModelo} />
         </div>
-        <div>
+        <div className="field">
           <label htmlFor="conductor">Conductor:</label>
           <input type="text" id="conductor" ref={this.inputConductor} />
         </div>
-        <div>
+        <div className="field">
           <label htmlFor="imagen">Imagen:</label>
           <input type="text" id="imagen" ref={this.inputImagen} />
         </div>
-        <button onClick={this.crearCoche}>Crear Coche</button>
-      </>
+        <button className="button button--primary button--full" onClick={this.crearCoche}>Crear coche</button>
+        </div>
+      </section>
     );
   }
 }

@@ -3,13 +3,14 @@ import React, { Component } from "react";
 export default class ConfirmarDialog extends Component {
   render() {
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-        <div className="bg-white p-6 rounded-lg">
-          <h2 className="text-xl font-bold mb-4">Confirmar eliminación</h2>
-          <p className="mb-4">
+      <div className="dialog-backdrop" role="presentation">
+        <div className="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+          <span className="dialog__icon">!</span>
+          <h2 id="dialog-title">Confirmar eliminación</h2>
+          <p>
             ¿Estás seguro de que quieres eliminar este coche?
           </p>
-          <ul className="mb-4">
+          <ul className="dialog__list">
             <li>
               <strong>Marca:</strong> {this.props.coche.marca}
             </li>
@@ -20,16 +21,16 @@ export default class ConfirmarDialog extends Component {
               <strong>Conductor:</strong> {this.props.coche.conductor}
             </li>
           </ul>
-          <div className="flex justify-end gap-2">
+          <div className="dialog__actions">
             <button
               onClick={this.props.onClose}
-              className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+              className="button button--ghost"
             >
               Cancelar
             </button>
             <button
               onClick={this.props.onConfirm}
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+              className="button button--danger"
             >
               Eliminar
             </button>

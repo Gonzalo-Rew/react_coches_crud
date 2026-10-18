@@ -39,12 +39,17 @@ export default class UpdateCoche extends Component {
 
   render() {
     if (this.state.cocheActualizado) {
-      return <Navigate to="/" />;
+      return <Navigate to={this.props.volverADetalle ? `/detalle/${this.props.id}` : "/"} />;
     }
     return (
-      <>
-        <h1>Modificar coche</h1>
-        <div>
+      <section className="form-page">
+        <div className="form-heading">
+          <span className="eyebrow">Editar vehículo</span>
+          <h1>Modificar coche</h1>
+          <p>Actualiza la información del vehículo seleccionado.</p>
+        </div>
+        <div className="form-card">
+        <div className="field">
           <label htmlFor="idCoche">ID Coche:</label>
           <input
             type="text"
@@ -54,7 +59,7 @@ export default class UpdateCoche extends Component {
             defaultValue={this.state.coche?.idCoche}
           />
         </div>
-        <div>
+        <div className="field">
           <label htmlFor="marca">Marca:</label>
           <input
             type="text"
@@ -63,7 +68,7 @@ export default class UpdateCoche extends Component {
             defaultValue={this.state.coche?.marca}
           />
         </div>
-        <div>
+        <div className="field">
           <label htmlFor="modelo">Modelo:</label>
           <input
             type="text"
@@ -72,7 +77,7 @@ export default class UpdateCoche extends Component {
             defaultValue={this.state.coche?.modelo}
           />
         </div>
-        <div>
+        <div className="field">
           <label htmlFor="conductor">Conductor:</label>
           <input
             type="text"
@@ -81,7 +86,7 @@ export default class UpdateCoche extends Component {
             defaultValue={this.state.coche?.conductor}
           />
         </div>
-        <div>
+        <div className="field">
           <label htmlFor="imagen">Imagen:</label>
           <input
             type="text"
@@ -90,8 +95,9 @@ export default class UpdateCoche extends Component {
             defaultValue={this.state.coche?.imagen}
           />
         </div>
-        <button onClick={this.updateCoche}>Actualizar Coche</button>
-      </>
+        <button className="button button--primary button--full" onClick={this.updateCoche}>Guardar cambios</button>
+        </div>
+      </section>
     );
   }
 }
