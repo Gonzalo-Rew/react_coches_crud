@@ -14,11 +14,8 @@ export default class MenuComponent extends Component {
             <NavLink to="/" className="transition-colors hover:text-gray-300">
               Galeria de coches
             </NavLink>
-            <NavLink to="/" className="transition-colors hover:text-gray-300">
-              Coches
-            </NavLink>
-            <NavLink to="/" className="transition-colors hover:text-gray-300">
-              Contacto
+            <NavLink to="/crear" className="transition-colors hover:text-gray-300">
+              Crear coche
             </NavLink>
           </div>
         </div>
